@@ -1,0 +1,22 @@
+{
+  "name": "softgamestask",
+  "version": "1.0.0",
+  "description": "Task from softgames",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "index.js"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "Yiyao Jian",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pixi.js": "^5.0.4"
+  },
+  "devDependencies": {
+    "webpack": "^4.35.0"
+  }
+}
