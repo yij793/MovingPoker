@@ -33,6 +33,7 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin({ distDir }),
     new HtmlWebpackPlugin({
+      inject: false,
       template: 'src/index.html'
     })
   ]
