@@ -31,6 +31,20 @@ function setup() {
 function gameloop(){
     app.ticker.autoStart = false;
     let j = 0;
+    if(j===143){
+        setInterval(function(){
+            let sprite=sprites[j];
+            let xv:number=(j-20)/120
+            let yv:number=(sprite.y-sprites[143-j].y)/120
+            app.ticker.add(function(){
+                if(sprite.x<20){ 
+                    sprite.x+=xv;
+                    sprite.y-=yv;
+                }
+            })
+            j===0? clearInterval():j--;
+        },2000)
+    }else{
     setInterval(function(){
     let sprite=sprites[143-j];
     let xv:number=(500-j)/120
@@ -41,8 +55,8 @@ function gameloop(){
             sprite.y-=yv;
         }
     })
-    j>=140? clearInterval():j++;
+    j>=143? clearInterval():j++;
 },2000)
+    }
 }
 //task2
-
