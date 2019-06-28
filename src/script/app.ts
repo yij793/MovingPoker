@@ -12,9 +12,12 @@ const app = new PIXI.Application({
   
   }
 )
-const W = app.screen.width;
-const H = app.screen.height;
-app.renderer.autoResize = true
+const W:number = app.screen.width;
+const H:number = app.screen.height
+const _w:number = window.innerWidth;
+const _h:number = window.innerHeight;
+window.addEventListener('resize',()=>{app.renderer.resize(_w,_h)})
+app.renderer.autoResize = true;
 // task#1
 
 let is_back:boolean= false; //is the card moving back
@@ -29,8 +32,8 @@ function setup() {
             app.loader.resources['poker_10'].texture
           );
           sprite.scale.set(0.6)
-          let xPositon=20+0.5*i;
-          let yPositon=50+2*i
+          let xPositon=0.1*W+0.5*i;
+          let yPositon=0.1*H+2*i
           sprite.position.set(xPositon,yPositon)
             app.stage.addChild(sprite);
         }
@@ -40,11 +43,13 @@ function gameloop(){
         if(!isCardMoving){
             isCardMoving=true;
             let sprite = app.stage.children[app.stage.children.length-1]//current spirit
-            let fPosition = {x:500-(20+0.5*counter),y:50+2*counter};
+            let fPosition = {x:0.8*W-(0.1*W+0.5*counter),y:0.1*H+2*counter};
             if(is_back)
-            fPosition = {x:20+0.5*counter,y:50+2*counter};
-            let xv:number = (fPosition.x - sprite.x);
-            let yv:number = (fPosition.y - sprite.y);
+            fPosition = {x:0.1*W+0.5*counter,y:0.1*H+2*counter};
+            let steps=100;//need 100 steps to reach the location
+            let timeInterval=2000 //require 2s to reach location
+            let xv:number = (fPosition.x - sprite.x)/steps;
+            let yv:number = (fPosition.y - sprite.y)/steps;
             let interval = setInterval(function(){
                 sprite.x += xv;
                 sprite.y += yv;
@@ -60,7 +65,7 @@ function gameloop(){
                     }
                 }
                 
-        },2000)
+        },timeInterval/steps)
     }
     })
 }
