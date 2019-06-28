@@ -12,11 +12,14 @@ const app = new PIXI.Application({
   
   }
 )
+const W = app.screen.width;
+const H = app.screen.height;
 app.renderer.autoResize = true
 // task#1
-let sprites:any[]=[];
+
 let is_back:boolean= false; //is the card moving back
-let count:number=0;
+let counter:number=0;
+let isCardMoving:boolean=false;
 app.loader
   .add('poker_10','../../assets/10D.svg')
   .load(setup).on('complete',gameloop)
@@ -25,44 +28,41 @@ function setup() {
         let sprite=new PIXI.Sprite(
             app.loader.resources['poker_10'].texture
           );
-          sprite.scale.set(0.3)
+          sprite.scale.set(0.6)
           let xPositon=20+0.5*i;
           let yPositon=50+2*i
           sprite.position.set(xPositon,yPositon)
-            sprites.push(sprite)
             app.stage.addChild(sprite);
         }
 }
 function gameloop(){
-    if(!is_back){
-        is_back=false;
-        setInterval(function(){
-            var sprite = app.stage.children[app.stage.children.length-1]
-            let xv:number=(count-20)/120
-            let yv:number=(sprite.y-sprites[143-count].y)/120
-            app.ticker.add(function(){
-                if(sprite.x<20){ 
-                    sprite.x+=xv;
-                    sprite.y-=yv;
+    app.ticker.add(()=>{
+        if(!isCardMoving){
+            isCardMoving=true;
+            let sprite = app.stage.children[app.stage.children.length-1]//current spirit
+            let fPosition = {x:500-(20+0.5*counter),y:50+2*counter};
+            if(is_back)
+            fPosition = {x:20+0.5*counter,y:50+2*counter};
+            let xv:number = (fPosition.x - sprite.x);
+            let yv:number = (fPosition.y - sprite.y);
+            let interval = setInterval(function(){
+                sprite.x += xv;
+                sprite.y += yv;
+                if(!is_back&&sprite.x>fPosition.x||is_back&&sprite.x<fPosition.x){
+                    sprite.position.set(fPosition.x,fPosition.y)
+                    clearInterval(interval);
+                    isCardMoving = false;
+                    app.stage.children.splice(counter,0,app.stage.children.pop())
+                    counter++;
+                    if(counter==144){
+                        counter = 0;
+                        is_back = !is_back;
+                    }
                 }
-            })
-            count===0? clearInterval():count--;
+                
         },2000)
-    }else{
-    is_back=true;
-    setInterval(function(){
-    let sprite=sprites[143-count];
-    let xv:number=(500-count)/120
-    let yv:number=(sprite.y-sprites[count].y)/120
-    app.ticker.add(function(){
-        if(sprite.x<500){ 
-            sprite.x+=xv;
-            sprite.y-=yv;
-        }
-    })
-    count>=143? clearInterval():count++;
-},2000)
     }
+    })
 }
 //task2
 // app.loader
