@@ -8,9 +8,11 @@ const app = new PIXI.Application({
     transparent: false,
     resolution: 1,
     view:canvas,
-    backgroundColor:579532
+    backgroundColor:579532,
+  
   }
 )
+app.renderer.autoResize = true
 //task#1
 let sprites:any[]=[];
 app.loader
