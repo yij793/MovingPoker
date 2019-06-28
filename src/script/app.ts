@@ -12,11 +12,11 @@ const app = new PIXI.Application({
   }
 )
 //task#1
+let sprites:any[]=[];
 app.loader
   .add('poker_10','../../assets/10D.svg')
-  .load(setup);
+  .load(setup).on('complete',gameloop)
 function setup() {
-    const sprites=[];
       for(let i=0;i<144;i++){
         let sprite=new PIXI.Sprite(
             app.loader.resources['poker_10'].texture
@@ -27,15 +27,22 @@ function setup() {
             sprites.push(sprite)
             app.stage.addChild(sprite);
         }
-        for(let j=0;j<144;j++){
-           
-            
-        }        
 }
-
-function cardMove(){
-    for(let i=0;i<144;i++){
-
-    }
+function gameloop(){
+    app.ticker.autoStart = false;
+    let j = 0;
+    setInterval(function(){
+    let sprite=sprites[143-j];
+    let xv:number=(500-j)/120
+    let yv:number=(sprite.y-sprites[j].y)/120
+    app.ticker.add(function(){
+        if(sprite.x<500){ 
+            sprite.x+=xv;
+            sprite.y-=yv;
+        }
+    })
+    j>=140? clearInterval():j++;
+},2000)
 }
-// creatSprite()
+//task2
+
