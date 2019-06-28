@@ -15,7 +15,8 @@ const app = new PIXI.Application({
 app.renderer.autoResize = true
 // task#1
 let sprites:any[]=[];
-var is_back:boolean= false; //is the card moving back
+let is_back:boolean= false; //is the card moving back
+let count:number=0;
 app.loader
   .add('poker_10','../../assets/10D.svg')
   .load(setup).on('complete',gameloop)
@@ -33,35 +34,33 @@ function setup() {
         }
 }
 function gameloop(){
-    
-    let j = 0;
     if(!is_back){
         is_back=false;
         setInterval(function(){
-            let sprite=sprites[j];
-            let xv:number=(j-20)/120
-            let yv:number=(sprite.y-sprites[143-j].y)/120
+            var sprite = app.stage.children[app.stage.children.length-1]
+            let xv:number=(count-20)/120
+            let yv:number=(sprite.y-sprites[143-count].y)/120
             app.ticker.add(function(){
                 if(sprite.x<20){ 
                     sprite.x+=xv;
                     sprite.y-=yv;
                 }
             })
-            j===0? clearInterval():j--;
+            count===0? clearInterval():count--;
         },2000)
     }else{
     is_back=true;
     setInterval(function(){
-    let sprite=sprites[143-j];
-    let xv:number=(500-j)/120
-    let yv:number=(sprite.y-sprites[j].y)/120
+    let sprite=sprites[143-count];
+    let xv:number=(500-count)/120
+    let yv:number=(sprite.y-sprites[count].y)/120
     app.ticker.add(function(){
         if(sprite.x<500){ 
             sprite.x+=xv;
             sprite.y-=yv;
         }
     })
-    j>=143? clearInterval():j++;
+    count>=143? clearInterval():count++;
 },2000)
     }
 }
