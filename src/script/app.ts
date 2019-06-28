@@ -1,5 +1,6 @@
 //@ts-check
 import * as PIXI from 'pixi.js';
+require('../styles/style.scss')
 const canvas=<HTMLCanvasElement>document.getElementById('myCanvas');
 const app = new PIXI.Application({
     width: window.innerWidth,
@@ -23,6 +24,7 @@ app.renderer.autoResize = true;
 let is_back:boolean= false; //is the card moving back
 let counter:number=0;
 let isCardMoving:boolean=false;
+const fps=document.getElementById('fps')
 app.loader
   .add('poker_10','../../assets/10D.svg')
   .load(setup).on('complete',gameloop)
@@ -41,6 +43,7 @@ function setup() {
 function gameloop(){
     app.ticker.add(()=>{
         if(!isCardMoving){
+            fps.innerHTML=`fps:${app.ticker.FPS}   minfps:${app.ticker.minFPS}`
             isCardMoving=true;
             let sprite = app.stage.children[app.stage.children.length-1]//current spirit
             let fPosition = {x:0.8*W-(0.1*W+0.5*counter),y:0.1*H+2*counter};
