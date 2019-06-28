@@ -15,6 +15,7 @@ const app = new PIXI.Application({
 app.renderer.autoResize = true
 // task#1
 let sprites:any[]=[];
+var is_back:boolean= false; //is the card moving back
 app.loader
   .add('poker_10','../../assets/10D.svg')
   .load(setup).on('complete',gameloop)
@@ -32,9 +33,10 @@ function setup() {
         }
 }
 function gameloop(){
-    app.ticker.autoStart = false;
+    
     let j = 0;
-    if(j===143){
+    if(!is_back){
+        is_back=false;
         setInterval(function(){
             let sprite=sprites[j];
             let xv:number=(j-20)/120
@@ -48,6 +50,7 @@ function gameloop(){
             j===0? clearInterval():j--;
         },2000)
     }else{
+    is_back=true;
     setInterval(function(){
     let sprite=sprites[143-j];
     let xv:number=(500-j)/120
